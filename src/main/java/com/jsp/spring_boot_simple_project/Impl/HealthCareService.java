@@ -165,17 +165,6 @@ public class HealthCareService implements DoctorsService{
 		query.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
 		return entityManager.createQuery(query).getResultList();
 	}
-	
-//	@Override
-//	public List<Doctors> getListOfDoctors(Doctors doctors) {
-//		Specification<Doctors> speci = doctorsSpecifications.findByCriteria(doctors);
-//
 
-
-
-
-//		List<Doctors> result = doctorsRepo.findAll(speci);
-//	    return result;
-//	}
 	
 }

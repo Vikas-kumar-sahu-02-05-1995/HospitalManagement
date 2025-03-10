@@ -2,17 +2,11 @@ package com.jsp.spring_boot_simple_project.Controller;
 
 import java.util.List;
 
+import com.jsp.spring_boot_simple_project.entity.Doctors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.jsp.spring_boot_simple_project.entity.Patients;
 import com.jsp.spring_boot_simple_project.service.PatientsService;
@@ -55,4 +49,10 @@ public class PatientsController {
 	public ResponseEntity<Patients> addPatientController(@RequestBody Patients patients) {
 		return new ResponseEntity<Patients>(patientsService.addPatient(patients), HttpStatus.OK);
 	}
+
+	@GetMapping("/search")
+	public List<Patients> searchDoctorsbyField(@RequestParam String value){
+		return  patientsService.searchByMultipleField(value);
+	}
+
 }

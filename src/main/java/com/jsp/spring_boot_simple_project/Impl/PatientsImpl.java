@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,5 +133,24 @@ public class PatientsImpl implements PatientsService {
 		patientsRequest.setDisease(patients.getDisease());
 		patientsRequest.setPatientName(patients.getPatientName());
 		return patientsRequest ;
+	}
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	public List<Patients> searchByMultipleField(String value){
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Patients> criteriaQuery = criteriaBuilder.createQuery(Patients.class);
+		Root<Patients> root = criteriaQuery.from(Patients.class);
+
+		List<Predicate> predicate = new ArrayList<>();
+
+		if(value != null){
+			predicate.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("patientName")), "%" + value.toLowerCase() + "%"));
+			predicate.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("disease")), "%" + value.toLowerCase()+ "%"));
+			predicate.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("age").as(String.class)), "%" + value.toLowerCase() + "%"));
+		}
+		criteriaQuery.where(criteriaBuilder.or(predicate.toArray(new Predicate[0])));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

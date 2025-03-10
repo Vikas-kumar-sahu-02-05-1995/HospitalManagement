@@ -20,4 +20,6 @@ public interface PatientsService {
 	public List<Patients> getAllPatients();
 
 	 public Patients addPatient(Patients patients) ;
+
+	public List<Patients> searchByMultipleField(String value);
 }

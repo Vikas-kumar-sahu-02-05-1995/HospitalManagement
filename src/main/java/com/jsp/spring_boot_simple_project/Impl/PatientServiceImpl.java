@@ -3,6 +3,13 @@ package com.jsp.spring_boot_simple_project.Impl;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.jsp.spring_boot_simple_project.entity.Doctors;
+import com.jsp.spring_boot_simple_project.entity.Patients;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +76,20 @@ public class PatientServiceImpl implements PatientService {
 					return patient;
 				})
 				.orElseThrow(() -> new EntityNotFoundException("Doctor Not found with id: "+patientId));
+	}
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+    @Override
+	public List<Patients> searchByMultipleField(String value) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(Patient.class);
+		Root<Patient> root = criteriaQuery.from(Patient.class);
+
+
+
+		return null;
 	}
 	
 //	@Override
