@@ -79,10 +79,10 @@ public class HealthCareController {
 //		return new ResponseEntity<List<Doctors>>(healthCareService.getListOfDoctors(doctors), HttpStatus.OK);
 //	}
 	
-//	@GetMapping("/search")
-//	public List<Doctors> searchDoctors(@RequestParam String value){
-//		return healthCareService.searchByMultipleFields(value);
-//	}
+	@GetMapping("/search")
+	public List<Doctors> searchDoctors(@RequestParam String value){
+		return healthCareService.searchByMultipleFields(value);
+	}
 	
 	
 	

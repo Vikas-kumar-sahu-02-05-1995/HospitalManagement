@@ -2,7 +2,6 @@ package com.jsp.spring_boot_simple_project.Impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,10 +118,6 @@ public class HealthCareService implements DoctorsService{
 	        return list;
 	}
 
-	@Override
-	public List<Doctors> searchByMultipleFields(String value) {
-		return List.of();
-	}
 
 	public Doctors convertToEntity(DoctorsRequest doctorsRequest) {
 		Doctors doctors = new Doctors();
@@ -145,13 +140,40 @@ public class HealthCareService implements DoctorsService{
 		doctorsRequest.setSpecialization(doctors.getSpecialization());
 		return doctorsRequest;
 	}
-	
-//
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<Doctors> searchByMultipleFields(String value) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Doctors> query = criteriaBuilder.createQuery(Doctors.class);
+		Root<Doctors> root = query.from(Doctors.class);
+
+		List<Predicate> predicates = new ArrayList<>();
+
+		if(value != null) {
+			predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("doctorsName")), "%" + value.toLowerCase() +"%"));
+			predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("id").as(String.class)), "%" + value.toLowerCase() + "%"));
+			predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("age").as(String.class)), "%" + value.toLowerCase() + "%"));
+			predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("qualification")), "%" + value.toLowerCase() + "%"));
+ //			double feeValue = Double.parseDouble(value);
+//			predicates.add(criteriaBuilder.between(root.get("fees"), feeValue - 10, feeValue + 100));
+//			predicates.add(criteriaBuilder.between(root.get("fees"),  Double.parseDouble(value) - 10,  Double.parseDouble(value) + 100));
+			predicates.add(criteriaBuilder.between(root.get("fees"),  Double.parseDouble(value) ,  Double.parseDouble(value) ));
+		}
+		query.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+		return entityManager.createQuery(query).getResultList();
+	}
 	
 //	@Override
 //	public List<Doctors> getListOfDoctors(Doctors doctors) {
 //		Specification<Doctors> speci = doctorsSpecifications.findByCriteria(doctors);
-//		
+//
+
+
+
+
 //		List<Doctors> result = doctorsRepo.findAll(speci);
 //	    return result;
 //	}

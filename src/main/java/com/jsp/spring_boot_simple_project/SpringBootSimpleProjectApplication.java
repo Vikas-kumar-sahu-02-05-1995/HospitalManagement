@@ -9,7 +9,5 @@ public class SpringBootSimpleProjectApplication  {    //implements CommandLineRu
  public static void main(String[] args) {
 		SpringApplication.run(SpringBootSimpleProjectApplication.class, args);
 		System.out.println("server started");
-	    
 	}
-	
 }
