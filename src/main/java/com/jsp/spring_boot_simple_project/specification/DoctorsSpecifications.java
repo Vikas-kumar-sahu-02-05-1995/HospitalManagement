@@ -16,24 +16,17 @@ import jakarta.persistence.criteria.Root;
 @Component
 public class DoctorsSpecifications {
 
-    public Specification<Doctors> findByCriteria(Doctors doctors) {
+    public Specification<Doctors> findByCriteriaSpecilized(String specilization) {
     	
-       //root provides access to Doctors entity, 
-    	// CriteriaQuery represent actual query 
-       //CriteriaBuilder used to construct Predicate object ,which represent condition of query.
+       //root provides access to Doctors entity; CriteriaQuery represent actual query; CriteriaBuilder used to construct Predicate object ,which represent condition of query.
        return (Root<Doctors> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> { //lambda expression
              
     	   //A list of Predicate Object is created to hold the condition of the query.
     	   List<Predicate> predicates = new ArrayList<>();
 
-//      if (doctors.getDoctorsName() != null) {
-//         predicates.add(criteriaBuilder.equal(root.get("doctorsName"), doctors.getDoctorsName()));
-//      }
-      if (doctors.getSpecialization() != null) {
-         predicates.add(criteriaBuilder.equal(root.get("specialization"), doctors.getSpecialization()));
-      }
-           // Add more criteria as needed
-            //Predicate in the List combined using 'and' operator, meaning all condition must true
+         if (specilization != null) {
+           predicates.add(criteriaBuilder.equal(root.get("specialization"), specilization));
+         }
             // for 'doctors' entity to be included in result.
        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
        };

@@ -2,6 +2,8 @@ package com.jsp.spring_boot_simple_project.Controller;
 
 import java.util.List;
 
+import com.jsp.spring_boot_simple_project.repository.DoctorsRepo;
+import com.jsp.spring_boot_simple_project.specification.DoctorsSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,12 @@ import com.jsp.spring_boot_simple_project.entity.Doctors;
 @RestController
 @RequestMapping("/doctor")
 public class HealthCareController {
+
+	@Autowired
+	private DoctorsRepo doctorsRepo;
+
+	@Autowired
+	private DoctorsSpecifications doctorsSpecifications;
 
 	@Autowired
 	private HealthCareService healthCareService;
@@ -68,10 +76,11 @@ public class HealthCareController {
 	public ResponseEntity<List<Doctors>> getAllDoctorsController() {
 		return new ResponseEntity<List<Doctors>>(healthCareService.getAllDoctors(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getListOfDoctorBySpecilization/{specialization}")
 	public ResponseEntity<List<Doctors>> getDoctorsBySpecialization(@PathVariable String specialization) {
-		return new ResponseEntity<List<Doctors>>(healthCareService.getDoctorsBySpecialization(specialization), HttpStatus.OK);
+		List<Doctors> doctorsList = doctorsRepo.findAll(doctorsSpecifications.findByCriteriaSpecilized(specialization));
+		return new ResponseEntity<>(doctorsList, HttpStatus.OK);
 	}
 	
 //	@GetMapping("/getListOfDoctorsBySpecilization")

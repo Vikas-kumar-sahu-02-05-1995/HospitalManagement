@@ -1,4 +1,4 @@
-package com.jsp.spring_boot_simple_project.entity;
+//package com.jsp.spring_boot_simple_project.entity;
 //import java.time.LocalDate;
 //
 //import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ package com.jsp.spring_boot_simple_project.entity;
 //
 //@Data
 //@Entity
-public class Medicine {
+//public class Medicine {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,6 @@ public class Medicine {
 //    @ManyToOne
 //    private Patient patient;
 
-}
+//}
 
 
