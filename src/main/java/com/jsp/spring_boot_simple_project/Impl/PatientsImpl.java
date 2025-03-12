@@ -41,7 +41,7 @@ public class PatientsImpl implements PatientsService {
 	public Patients savePatientByDoctorId(int id, Patients patient) {
        Doctors doctor = doctorsRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id " + id));
-        patient.setDoctor1(doctor);
+        patient.setDoctor(doctor);
      return patientsRepo.save(patient);
     }
 
@@ -85,29 +85,29 @@ public class PatientsImpl implements PatientsService {
 	@Override
 	public Patients addPatient(Patients patients) {
 	    // Ensure the medicines list is not null
-	    if (patients.getMedicine1() != null) {
+	    if (patients.getMedicines() != null) {
 	        List<Medicines> associatedMedicines = new ArrayList<>();
-	        for (Medicines medicines : patients.getMedicine1()) {
+	        for (Medicines medicines : patients.getMedicines()) {
 	            // Find the existing medicine by its ID
 	            Medicines existingMedicine = medicinesRepo.findById(medicines.getMedicineId()).orElse(null);
 	            if (existingMedicine != null) {
 	                // Set the patient for this existing medicine
-	                existingMedicine.setPatient1(patients);
+	                existingMedicine.setPatient(patients);
 	                associatedMedicines.add(existingMedicine);
 	            } else {
 	                return null;
 	            }
 	        }
 	        // Associate the found medicines with the patient
-	        patients.setMedicine1(associatedMedicines);
+	        patients.setMedicines(associatedMedicines);
 	   }
-	    if (patients.getDoctor1() != null) {
+	    if (patients.getDoctor() != null) {
 	        // Find the existing doctor by its ID
-	        Doctors existingDoctor = doctorsRepo.findById(patients.getDoctor1().getId())
-	            .orElseThrow(() -> new NoSuchElementException("No Doctor found with id: " + patients.getDoctor1().getId()));
+	        Doctors existingDoctor = doctorsRepo.findById(patients.getDoctor().getId())
+	            .orElseThrow(() -> new NoSuchElementException("No Doctor found with id: " + patients.getDoctor().getId()));
 
 	        // Associate the found doctor with the patient
-	        patients.setDoctor1(existingDoctor);
+	        patients.setDoctor(existingDoctor);
 	    }
 
 	    // Save and return the patient

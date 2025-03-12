@@ -21,8 +21,8 @@ public class Medicines {
     private double rate;
     private long quantity;
 
+
     @ManyToOne
-    @JsonIgnore
-    private Patients patient1;
+    private Patients patient;
     
 }

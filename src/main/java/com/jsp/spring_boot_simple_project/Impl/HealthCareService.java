@@ -46,16 +46,16 @@ public class HealthCareService implements DoctorsService{
 	        if (doctors.getPatient1() != null) {
 	            for (Patients patient : doctors.getPatient1()) {
 	                // Set the doctor for each patient
-	                patient.setDoctor1(doctors);
+	                patient.setDoctor(doctors);
 
 	                // Save the patient first
 	                patientsRepo.save(patient);
 
 	                // Save all medicines associated with the patient
-	                if (patient.getMedicine1() != null) {
-	                    for (Medicines medicine : patient.getMedicine1()) {
+	                if (patient.getMedicines() != null) {
+	                    for (Medicines medicine : patient.getMedicines()) {
 	                        // Set the patient for each medicine
-	                        medicine.setPatient1(patient);
+	                        medicine.setPatient(patient);
 	                        // Save the medicine
 	                        medicineRepo.save(medicine);
 	                    }

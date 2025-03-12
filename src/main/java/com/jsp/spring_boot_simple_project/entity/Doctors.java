@@ -21,36 +21,25 @@ public class Doctors {
     private double fees;
     private String qualification;
     private String specialization;
-    
-    public Doctors(int id, String doctorsName, String gender, int age, double fees, String qualification,
-			String specialization, List<Patients> patient1) {
-		super();
-		this.id = id;
-		this.doctorsName = doctorsName;
-		this.gender = gender;
-		this.age = age;
-		this.fees = fees;
-		this.qualification = qualification;
-		this.specialization = specialization;
-		this.patient1 = patient1;
-	}
-    
-    public Doctors(int id, String doctorsName, String gender, int age, double fees, String qualification,
-			String specialization) {
-		super();
-		this.id = id;
-		this.doctorsName = doctorsName;
-		this.gender = gender;
-		this.age = age;
-		this.fees = fees;
-		this.qualification = qualification;
-		this.specialization = specialization;
-	
-	}
-    
 
-	@OneToMany(mappedBy = "doctor1", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Patients> patient1;
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Patients> patients;  // Changed patient1 → patients
+
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<MedicalTest> medicalTests;  // Mapped correctly with "doctor"
+
+	public Doctors(int id, String doctorsName, String gender, int age, double fees, String qualification,
+				   String specialization, List<Patients> patient1) {
+		super();
+		this.id = id;
+		this.doctorsName = doctorsName;
+		this.gender = gender;
+		this.age = age;
+		this.fees = fees;
+		this.qualification = qualification;
+		this.specialization = specialization;
+		this.patients = patient1;
+	}
 
     public Doctors() {
 		super();
@@ -113,11 +102,11 @@ public class Doctors {
 	}
 
 	public List<Patients> getPatient1() {
-		return patient1;
+		return patients;
 	}
 
 	public void setPatient1(List<Patients> patient1) {
-		this.patient1 = patient1;
+		this.patients = patient1;
 	}
 
 

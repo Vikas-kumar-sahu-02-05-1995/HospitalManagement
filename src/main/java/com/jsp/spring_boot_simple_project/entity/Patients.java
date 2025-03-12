@@ -4,12 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -23,11 +18,15 @@ public class Patients {
 	private String gender;
 	private int age;
 	private String address;
-	
-	@OneToMany(mappedBy = "patient1", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Medicines> medicine1;
-	
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Medicines> medicines;  // Changed from medicine1 to medicines
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private Doctors doctor1;
+	private Doctors doctor;  // Changed doctor1 → doctor
+
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+	private List<MedicalTest> medicalTests;  // "mappedBy" should match "patient" in MedicalTest
+
 }

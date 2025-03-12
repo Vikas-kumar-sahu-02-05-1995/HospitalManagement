@@ -27,7 +27,7 @@ public class MedicinesImpl implements MedicinesService {
 	public Medicines saveMedicineByPatientId(int patientId,Medicines medicine) {
 		Patients patients = patientRepository.findById(patientId)
 				.orElseThrow(() -> new NoSuchElementException("No Patient id found "+patientId));
-		medicine.setPatient1(patients);
+		medicine.setPatient(patients);
 		return medicinesRepo.save(medicine);
 	}
 
